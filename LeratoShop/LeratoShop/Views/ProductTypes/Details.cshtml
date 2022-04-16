@@ -1,0 +1,16 @@
+﻿@model LeratoShop.Data.Entities.ProductType
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalles</h1>
+
+<div>
+   <partial name = "_ProductTypeDetailsDelete"/>
+</div>
+<div>
+    <a asp-action="AddProduct" asp-route-id="@Model?.Id" class="btn btn-dark">Agregar Producto</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Editar Tipo Producto</a>
+    <a asp-action="Index" class="btn btn-secondary">Regresar</a>
+</div>
