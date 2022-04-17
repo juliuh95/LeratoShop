@@ -1,4 +1,7 @@
 using LeratoShop.Data;
+using LeratoShop.Data.Entities;
+using LeratoShop.Helper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +13,21 @@ builder.Services.AddDbContext<DataContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// TODO Make strongest password
+builder.Services.AddIdentity<User, IdentityRole>(cfg =>
+{
+    cfg.User.RequireUniqueEmail = true;
+    cfg.Password.RequireDigit = false;
+    cfg.Password.RequiredUniqueChars = 0;
+    cfg.Password.RequireLowercase = false;
+    cfg.Password.RequireNonAlphanumeric = false;
+    cfg.Password.RequireUppercase = false;
+}).AddEntityFrameworkStores<DataContext>();
+
+
+builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddTransient<SeedDb>();
+
 var app = builder.Build();
 
 
@@ -40,7 +57,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
