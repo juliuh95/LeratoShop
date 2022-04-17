@@ -1,0 +1,17 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LeratoShop.Models
+{
+    public class ProductDetailViewModel
+    {
+
+        public int Id { get; set; }
+
+        [Display(Name = "Color Producto")]
+        [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        public string Color { get; set; }
+
+        public int ProductId { get; set; }
+    }
+}

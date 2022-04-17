@@ -8,7 +8,7 @@
 <h1>Detalles del producto</h1>
 
 <div>
-   <partial name = "_ProductDetailsDeleteDetails"/>
+   <partial name = "_ProductDeleteDetails"/>
 </div>
 <div>
     <a asp-action="AddProductDetails" asp-route-id="@Model?.Id" class="btn btn-dark">Agregar detalle Producto</a>
@@ -40,8 +40,8 @@
                                     @Html.DisplayFor(modelItem => item.Color)
                                 </td>
                                 <td>
-                                    <a asp-action="EditProductDetail" asp-route-id="@item.Id" class="btn btn-dark btn-sm">Editar</a>
-                                    <a asp-action="DeleteProductDetail" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                                    <a asp-action="EditProductDetails" asp-route-id="@item.Id" class="btn btn-dark btn-sm">Editar</a>
+                                    <a asp-action="DeleteProductDetails" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
                                 </td>
                             </tr>
                         }

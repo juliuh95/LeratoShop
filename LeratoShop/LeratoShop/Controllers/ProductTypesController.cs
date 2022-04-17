@@ -157,7 +157,7 @@ namespace LeratoShop.Controllers
                 return NotFound();
             }
 
-            var productType = await _context.ProductTypes
+            ProductType productType = await _context.ProductTypes
                 .Include(pt => pt.Products)
                 .FirstOrDefaultAsync(pt =>pt.Id == id);
             if (productType == null)
@@ -172,10 +172,71 @@ namespace LeratoShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var productType = await _context.ProductTypes.FindAsync(id);
+            ProductType productType = await _context.ProductTypes.FindAsync(id);
             _context.ProductTypes.Remove(productType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+
+        public async Task<IActionResult> DeleteProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Product product = await _context.Products
+                .Include(p => p.ProductType)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        [HttpPost, ActionName("DeleteProduct")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteProductConfirmed(int id)
+        {
+            Product product = await _context.Products
+                .Include(p => p.ProductType)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { Id = product.ProductType.Id });
+        }
+
+        public async Task<IActionResult> DeleteProductDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProductDetail productDetail = await _context.ProductDetails
+                .Include(pd => pd.Product)
+                .FirstOrDefaultAsync(pd => pd.Id == id);
+            if (productDetail == null)
+            {
+                return NotFound();
+            }
+
+            return View(productDetail);
+        }
+
+        [HttpPost, ActionName("DeleteProductDetails")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteProductDetailsConfirmed(int id)
+        {
+            ProductDetail productDetail = await _context.ProductDetails
+                .Include(pd => pd.Product)
+                .FirstOrDefaultAsync(pd => pd.Id == id);
+            _context.ProductDetails.Remove(productDetail);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(ProductDetails), new { Id = productDetail.Product.Id });
         }
 
         public async Task<IActionResult> AddProduct(int? id)
@@ -200,6 +261,7 @@ namespace LeratoShop.Controllers
 
             return View(model);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -227,6 +289,68 @@ namespace LeratoShop.Controllers
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
                         ModelState.AddModelError(string.Empty, "Ya existe un producto con el mismo nombre.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+            return View(model);
+
+        }
+
+        public async Task<IActionResult> AddProductDetails(int? id)
+
+        {
+            if (id == null)
+            {
+
+                return NotFound();
+            }
+
+            Product product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            ProductDetailViewModel model = new()
+            {
+                ProductId = product.Id,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddProductDetails(ProductDetailViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ProductDetail productDetails = new()
+                    {
+                        Product = await _context.Products.FindAsync(model.ProductId),
+                        Color = model.Color,
+
+                    };
+
+                    _context.Add(productDetails);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(ProductDetails), new { Id = model.ProductId });
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe un detalle producto con el mismo nombre.");
                     }
                     else
                     {
@@ -313,5 +437,72 @@ namespace LeratoShop.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> EditProductDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProductDetail productDetail = await _context.ProductDetails
+             .Include(pd => pd.Product)
+             .FirstOrDefaultAsync(pd => pd.Id == id);
+
+            if (productDetail == null)
+            {
+                return NotFound();
+            }
+
+            ProductDetailViewModel model = new()
+            {
+                Id = productDetail.Id,
+                Color = productDetail.Color,
+                ProductId = productDetail.Product.Id
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProductDetails(int id, ProductDetailViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ProductDetail productDetail = new()
+                    {
+                        Id =model.Id,
+                        Color =model.Color,
+
+                    };
+                    _context.Update(productDetail);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(ProductDetails), new { Id = model.ProductId });
+
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe un producto con el mismo nombre.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+            return View(model);
+        }
     }
 }
