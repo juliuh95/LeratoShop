@@ -22,7 +22,8 @@ namespace LeratoShop.Controllers
         }
         public IActionResult Create()
         {
-            return View();
+            ProductType productType = new() { Products = new List<Product>() };
+            return View(productType);
         }
 
         [HttpPost]
@@ -118,7 +119,7 @@ namespace LeratoShop.Controllers
                 return NotFound();
             }
 
-            var productType = await _context.ProductTypes
+            ProductType productType = await _context.ProductTypes
                 .Include(pt => pt.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (productType == null)
@@ -128,6 +129,26 @@ namespace LeratoShop.Controllers
 
             return View(productType);
         }
+
+        public async Task<IActionResult> ProductDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Product product = await _context.Products
+                .Include(p => p.ProductDetails)
+                .Include(pt => pt.ProductType)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
 
         public async Task<IActionResult> Delete(int? id)
         {

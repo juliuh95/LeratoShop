@@ -21,5 +21,10 @@ namespace LeratoShop.Data.Entities
         public int Price { get; set; }
 
         public ProductType ProductType { get; set; }
+
+        public ICollection<ProductDetail> ProductDetails { get; set; }
+
+        [Display(Name = "Detalle productos")]
+        public int ProductDetailNumber => ProductDetails == null ? 0 : ProductDetails.Count;
     }
 }

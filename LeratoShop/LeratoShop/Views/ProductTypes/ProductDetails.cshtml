@@ -1,19 +1,18 @@
-﻿@model LeratoShop.Data.Entities.ProductType
-
+﻿@model LeratoShop.Data.Entities.Product
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "ProductDetails";
 }
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
-<h1>Detalles</h1>
+<h1>Detalles del producto</h1>
 
 <div>
-   <partial name = "_ProductTypeDetailsDelete"/>
+   <partial name = "_ProductDetailsDeleteDetails"/>
 </div>
 <div>
-    <a asp-action="AddProduct" asp-route-id="@Model?.Id" class="btn btn-dark">Agregar Producto</a>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Editar Tipo Producto</a>
+    <a asp-action="AddProductDetails" asp-route-id="@Model?.Id" class="btn btn-dark">Agregar detalle Producto</a>
+    <a asp-action="EditProduct" asp-route-id="@Model?.Id" class="btn btn-primary">Editar Producto</a>
     <a asp-action="Index" class="btn btn-secondary">Regresar</a>
 </div>
 <hr />
@@ -28,34 +27,21 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Name)
-                            </th>
-                             <th>
-                                @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Price)
-                            </th>
-                             <th>
-                                @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Quantity)
+                                @Html.DisplayNameFor(model => model.ProductDetails.FirstOrDefault().Color)
                             </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.Products)
+                        @foreach (var item in Model.ProductDetails)
                         {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Price)
-                                </td>
-                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Quantity)
+                                    @Html.DisplayFor(modelItem => item.Color)
                                 </td>
                                 <td>
-                                    <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-dark btn-sm">Editar</a>
-                                    <a asp-action="ProductDetails" asp-route-id="@item.Id" class="btn btn-secondary btn-sm">Detalles</a>
-                                    <a asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                                    <a asp-action="EditProductDetail" asp-route-id="@item.Id" class="btn btn-dark btn-sm">Editar</a>
+                                    <a asp-action="DeleteProductDetail" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
                                 </td>
                             </tr>
                         }
@@ -86,4 +72,5 @@
     });
 </script>
 }
+
 
