@@ -11,14 +11,12 @@ namespace LeratoShop.Data.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Name { get; set; }
 
-        [Display(Name = "Cantidad del Producto")]
-      //  [MaxLength(15, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres")]
+        [Display(Name = "Cantidad del Producto")]     
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public int Quantity { get; set; }
 
 
-        [Display(Name = "Precio del Producto")]
-       // [MaxLength(15, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres")]
+        [Display(Name = "Precio del Producto")]      
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public int Price { get; set; }
 

@@ -17,7 +17,8 @@ namespace LeratoShop.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductTypes.ToListAsync());
+            return View(await _context.ProductTypes.Include(pt => pt.Products).ToListAsync());
+
         }
         public IActionResult Create()
         {
@@ -63,7 +64,9 @@ namespace LeratoShop.Controllers
                 return NotFound();
             }
 
-            var productType = await _context.ProductTypes.FindAsync(id);
+            ProductType productType = await _context.ProductTypes
+                .Include(pt => pt.Products)
+                .FirstOrDefaultAsync(pt => pt.Id == id);
             if (productType == null)
             {
                 return NotFound();
@@ -81,7 +84,6 @@ namespace LeratoShop.Controllers
             }
 
             if (ModelState.IsValid)
-                Debug.WriteLine("Inicia validacion modelo");
             {
                 try
                 {
@@ -117,6 +119,7 @@ namespace LeratoShop.Controllers
             }
 
             var productType = await _context.ProductTypes
+                .Include(pt => pt.Products)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (productType == null)
             {
@@ -134,7 +137,8 @@ namespace LeratoShop.Controllers
             }
 
             var productType = await _context.ProductTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(pt => pt.Products)
+                .FirstOrDefaultAsync(pt =>pt.Id == id);
             if (productType == null)
             {
                 return NotFound();
@@ -153,7 +157,7 @@ namespace LeratoShop.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-       /* public async Task<IActionResult> AddProduct(int? id)
+        public async Task<IActionResult> AddProduct(int? id)
 
         {
             if (id == null)
@@ -215,6 +219,78 @@ namespace LeratoShop.Controllers
             }
             return View(model);
 
-        }*/
+        }
+        public async Task<IActionResult> EditProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Product product = await _context.Products
+             .Include(p => p.ProductType)
+             .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            ProductViewModel model = new()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Quantity = product.Quantity,
+                ProductTypeId = product.ProductType.Id
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProduct(int id, ProductViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Product product = new()
+                    {
+                        Id =model.Id,   
+                        Name =model.Name,
+                        Quantity = model.Quantity,
+                        Price = model.Price,
+                       
+                    };
+                    _context.Update(product);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details), new {Id = model.ProductTypeId});
+
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe un producto con el mismo nombre.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+            return View(model);
+        }
+
     }
 }
