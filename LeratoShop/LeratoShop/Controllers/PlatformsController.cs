@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LeratoShop.Data;
 using LeratoShop.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LeratoShop.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PlatformsController : Controller
     {
         private readonly DataContext _context;

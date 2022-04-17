@@ -22,6 +22,7 @@ namespace LeratoShop.Data
             await CheckProductTypesAsync();
             await CheckRolesAsync();
             await CheckUserAsync("1010", "Juan", "Zuluaga", "zulu@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", UserType.Admin);
+            await CheckUserAsync("1011", "Juliana", "zapata", "juli@yopmail.com", "312 311 4620", "Calle 2'# 30-40", UserType.User);
 
         }
         private async Task<User> CheckUserAsync(

@@ -1,4 +1,5 @@
 ﻿using LeratoShop.Data.Entities;
+using LeratoShop.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace LeratoShop.Helper
@@ -14,6 +15,10 @@ namespace LeratoShop.Helper
         Task AddUserToRoleAsync(User user, string roleName);
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
+
+        Task<SignInResult> LoginAsync(LoginViewModel model);
+
+        Task LogoutAsync();
 
     }
 }

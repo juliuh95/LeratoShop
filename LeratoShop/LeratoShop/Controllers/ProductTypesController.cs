@@ -1,12 +1,15 @@
 ﻿using LeratoShop.Data;
 using LeratoShop.Data.Entities;
 using LeratoShop.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace LeratoShop.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class ProductTypesController : Controller
     {
         private readonly DataContext _context;
