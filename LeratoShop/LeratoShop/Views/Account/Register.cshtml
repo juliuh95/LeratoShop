@@ -1,0 +1,108 @@
+﻿@model LeratoShop.Models.AddUserViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Registrar</h2>
+
+<h4>Usuario</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Register" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserType" />
+            <input type="hidden" asp-for="ProductTypes" />
+            <input type="hidden" asp-for="Products" />
+            <input type="hidden" asp-for="ProductDetails" />
+
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PasswordConfirm" class="control-label"></label>
+                        <input asp-for="PasswordConfirm" class="form-control" />
+                        <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>    
+
+            <partial name="_User" />
+
+            <div class="form-group mt-2">
+                <input type="submit" value="Registrar" class="btn btn-outline-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ProductTypesId").change(function () {  
+                debugger;
+                $("#ProductsId").empty();
+                $("#ProductsId").append('<option value="0">[Selecciona un producto...]</option>');
+                $("#ProductDetailsId").empty();
+                $("#ProductDetailsId").append('<option value="0">[Selecciona un detalle del producto...]</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetProducts")',
+                    dataType: 'json',
+                    data: { productTypeId: $("#ProductTypesId").val() },
+                    success: function (products) {
+                        $.each(products, function (i, product) {
+                            $("#ProductsId").append('<option value="'
+                                + product.id + '">'
+                                + product.name + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve states.' + ex);
+                    }
+                });
+                return false;
+            })
+
+            $("#ProductsId").change(function () {
+                $("#ProductDetailsId").empty();
+                $("#ProductDetailsId").append('<option value="0">[Selecciona un detalle del producto...]</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetProductDetails")',
+                    dataType: 'json',
+                    data: { productId: $("#ProductsId").val() },
+                    success: function (productDetails) {
+                        $.each(productDetails, function (i, productDetail) {
+                            debugger;
+                            $("#ProductDetailsId").append('<option value="'
+                                + productDetail.id + '">'
+                                + productDetail.name + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve cities.' + ex);
+                    }
+                });
+                return false;
+            })
+        });
+    </script>
+}
+
+

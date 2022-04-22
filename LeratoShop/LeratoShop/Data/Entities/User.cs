@@ -28,11 +28,10 @@ public class User : IdentityUser
     [Display(Name = "Foto")]
     public Guid ImageId { get; set; }
 
-    //TODO: Pending to put the correct paths
     [Display(Name = "Foto")]
     public string ImageFullPath => ImageId == Guid.Empty
         ? $"https://localhost:7016/images/noimage.png"
-        : $"https://shoppingprep.blob.core.windows.net/users/{ImageId}";
+        : $"https://leratoshop.blob.core.windows.net/users/{ImageId}";
 
     [Display(Name = "Tipo de usuario")]
     public UserType UserType { get; set; }
