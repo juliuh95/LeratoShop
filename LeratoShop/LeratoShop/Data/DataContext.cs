@@ -18,6 +18,13 @@ namespace LeratoShop.Data
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> States { get; set; }
 
+        public DbSet<DocumentType> DocumentTypes { get; set; }
+
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<ProductPhoto> ProductPhotos { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<ReturnedProduct> ReturnedProducts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

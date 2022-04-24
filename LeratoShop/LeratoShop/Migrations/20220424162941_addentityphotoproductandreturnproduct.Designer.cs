@@ -4,6 +4,7 @@ using LeratoShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeratoShop.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220424162941_addentityphotoproductandreturnproduct")]
+    partial class addentityphotoproductandreturnproduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,11 +147,11 @@ namespace LeratoShop.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("Revenue")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Revenue")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -241,7 +243,7 @@ namespace LeratoShop.Migrations
                     b.ToTable("ProductDetails");
                 });
 
-            modelBuilder.Entity("LeratoShop.Data.Entities.ProductPhoto", b =>
+            modelBuilder.Entity("LeratoShop.Data.Entities.ProductPhotos", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -308,7 +310,7 @@ namespace LeratoShop.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("ReturnedProducts");
+                    b.ToTable("ReturnedProduct");
                 });
 
             modelBuilder.Entity("LeratoShop.Data.Entities.State", b =>

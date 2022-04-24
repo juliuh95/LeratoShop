@@ -22,10 +22,23 @@ namespace LeratoShop.Data
             await CheckProductTypesAsync();
             await CheckCountriesAsync();
             await CheckRolesAsync();
-            await CheckUserAsync("1010", "Juan", "Zuluaga", "zulu@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", UserType.Admin);
-            await CheckUserAsync("1011", "Juliana", "zapata", "juli@yopmail.com", "312 311 4620", "Calle 2'# 30-40", UserType.User);
+            await CheckDocumentTypeAsync();
+            await CheckUserAsync("1010", "Juan", "Zuluaga", "zulu@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", UserType.Admin, new DocumentType { Description = "CC"});
+            await CheckUserAsync("1011", "Juliana", "zapata", "juli@yopmail.com", "312 311 4620", "Calle 2'# 30-40", UserType.User, new DocumentType { Description = "CC" });
 
         }
+
+        private async Task CheckDocumentTypeAsync()
+        {
+            if (!_context.DocumentTypes.Any())
+            {
+                _context.DocumentTypes.Add(new DocumentType { Description="CC" });
+                _context.DocumentTypes.Add(new DocumentType { Description="TI" });
+                _context.DocumentTypes.Add(new DocumentType { Description="CE" });
+            }
+            await _context.SaveChangesAsync();
+        }
+
         private async Task<User> CheckUserAsync(
         string document,
         string firstName,
@@ -33,7 +46,8 @@ namespace LeratoShop.Data
         string email,
         string phone,
         string address,
-        UserType userType)
+        UserType userType,
+        DocumentType documentType)
         {
             User user = await _userHelper.GetUserAsync(email);
             if (user == null)
@@ -49,6 +63,7 @@ namespace LeratoShop.Data
                     Document = document,
                     City = _context.Cities.FirstOrDefault(),
                     UserType = userType,
+                    DocumentType = documentType,
                 };
 
                 await _userHelper.AddUserAsync(user, "123456");

@@ -40,7 +40,9 @@ namespace LeratoShop.Helper
                 PhoneNumber = model.PhoneNumber,
                 City = await _context.Cities.FindAsync(model.CityId),
                 UserName = model.Username,
-                UserType = model.UserType
+                UserType = model.UserType,
+                DocumentType = new DocumentType{ Description = "CC"}
+               
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);

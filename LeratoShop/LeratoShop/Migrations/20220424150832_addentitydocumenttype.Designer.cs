@@ -4,6 +4,7 @@ using LeratoShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeratoShop.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220424150832_addentitydocumenttype")]
+    partial class addentitydocumenttype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,49 +49,6 @@ namespace LeratoShop.Migrations
                         .HasFilter("[StateId] IS NOT NULL");
 
                     b.ToTable("Cities");
-                });
-
-            modelBuilder.Entity("LeratoShop.Data.Entities.Client", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Document")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<int?>("DocumentTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DocumentTypeId");
-
-                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("LeratoShop.Data.Entities.Country", b =>
@@ -131,31 +90,6 @@ namespace LeratoShop.Migrations
                     b.ToTable("DocumentTypes");
                 });
 
-            modelBuilder.Entity("LeratoShop.Data.Entities.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("DatePurchase")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Revenue")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("LeratoShop.Data.Entities.Platform", b =>
                 {
                     b.Property<int>("Id")
@@ -190,9 +124,6 @@ namespace LeratoShop.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
@@ -206,8 +137,6 @@ namespace LeratoShop.Migrations
 
                     b.HasIndex("Name")
                         .IsUnique();
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductTypeId");
 
@@ -241,24 +170,6 @@ namespace LeratoShop.Migrations
                     b.ToTable("ProductDetails");
                 });
 
-            modelBuilder.Entity("LeratoShop.Data.Entities.ProductPhoto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductPhotos");
-                });
-
             modelBuilder.Entity("LeratoShop.Data.Entities.ProductType", b =>
                 {
                     b.Property<int>("Id")
@@ -278,37 +189,6 @@ namespace LeratoShop.Migrations
                         .IsUnique();
 
                     b.ToTable("ProductTypes");
-                });
-
-            modelBuilder.Entity("LeratoShop.Data.Entities.ReturnedProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("FaultDescription")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Warranty")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("ReturnedProducts");
                 });
 
             modelBuilder.Entity("LeratoShop.Data.Entities.State", b =>
@@ -581,21 +461,8 @@ namespace LeratoShop.Migrations
                     b.Navigation("State");
                 });
 
-            modelBuilder.Entity("LeratoShop.Data.Entities.Client", b =>
-                {
-                    b.HasOne("LeratoShop.Data.Entities.DocumentType", "DocumentType")
-                        .WithMany("Clients")
-                        .HasForeignKey("DocumentTypeId");
-
-                    b.Navigation("DocumentType");
-                });
-
             modelBuilder.Entity("LeratoShop.Data.Entities.Product", b =>
                 {
-                    b.HasOne("LeratoShop.Data.Entities.Order", null)
-                        .WithMany("Products")
-                        .HasForeignKey("OrderId");
-
                     b.HasOne("LeratoShop.Data.Entities.ProductType", "ProductType")
                         .WithMany("Products")
                         .HasForeignKey("ProductTypeId");
@@ -610,13 +477,6 @@ namespace LeratoShop.Migrations
                         .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("LeratoShop.Data.Entities.ReturnedProduct", b =>
-                {
-                    b.HasOne("LeratoShop.Data.Entities.Order", null)
-                        .WithMany("ReturnedProducts")
-                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("LeratoShop.Data.Entities.State", b =>
@@ -706,16 +566,7 @@ namespace LeratoShop.Migrations
 
             modelBuilder.Entity("LeratoShop.Data.Entities.DocumentType", b =>
                 {
-                    b.Navigation("Clients");
-
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("LeratoShop.Data.Entities.Order", b =>
-                {
-                    b.Navigation("Products");
-
-                    b.Navigation("ReturnedProducts");
                 });
 
             modelBuilder.Entity("LeratoShop.Data.Entities.Product", b =>

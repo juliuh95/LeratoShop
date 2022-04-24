@@ -44,5 +44,8 @@ public class User : IdentityUser
 
     [Display(Name = "Usuario")]
     public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
+
+    public DocumentType DocumentType { get; set; }
+
 }
 }
