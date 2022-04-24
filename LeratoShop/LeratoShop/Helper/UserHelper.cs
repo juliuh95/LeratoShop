@@ -108,7 +108,7 @@ namespace LeratoShop.Helper
            return await _signInManager.PasswordSignInAsync(
             model.Username,
             model.Password,
-            model.RememberMe,false);
+            model.RememberMe,true);
 
         }
 
