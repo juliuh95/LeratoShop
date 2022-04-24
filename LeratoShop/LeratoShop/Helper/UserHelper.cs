@@ -37,7 +37,8 @@ namespace LeratoShop.Helper
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 ImageId = model.ImageId,
-                PhoneNumber = model.PhoneNumber,               
+                PhoneNumber = model.PhoneNumber,
+                City = await _context.Cities.FindAsync(model.CityId),
                 UserName = model.Username,
                 UserType = model.UserType
             };

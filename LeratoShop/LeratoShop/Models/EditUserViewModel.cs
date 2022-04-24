@@ -44,25 +44,26 @@ namespace LeratoShop.Models
         [Display(Name = "Image")]
         public IFormFile ImageFile { get; set; }
 
-        [Display(Name = "Tipo Producto")]
-        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar un tipo producto.")]
+        [Display(Name = "País")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar un país.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public int ProductTypesId { get; set; }
+        public int CountryId { get; set; }
 
-        public IEnumerable<SelectListItem> ProductTypes { get; set; }
+        public IEnumerable<SelectListItem> Countries { get; set; }
 
-        [Display(Name = "Producto")]
-        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar un producto.")]
+        [Display(Name = "Departmento / Estado")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar un departamento/estado.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        public int ProductsId { get; set; }
+        public int StateId { get; set; }
 
-        public IEnumerable<SelectListItem> Products { get; set; }
+        public IEnumerable<SelectListItem> States { get; set; }
 
-        [Display(Name = "Detalle del Producto")]
-        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar un detalle del producto.")]
-        public int ProductDetailsId { get; set; }
+        [Display(Name = "Ciudad")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debes de seleccionar una ciudad.")]
+        public int CityId { get; set; }
 
-        public IEnumerable<SelectListItem> ProductDetails { get; set; }
+        public IEnumerable<SelectListItem> Cities { get; set; }
+
 
     }
 }

@@ -11,9 +11,15 @@ namespace LeratoShop.Helper
 
             Task<IEnumerable<SelectListItem>> GetComboProductsAsync(int productTypeId);
 
-            Task<IEnumerable<SelectListItem>> GetComboProductDiteilsAsync(int productId);
-        
+            Task<IEnumerable<SelectListItem>> GetComboProductDetailsAsync(int productId);
 
-      
+            Task<IEnumerable<SelectListItem>> GetComboCountriesAsync();
+
+            Task<IEnumerable<SelectListItem>> GetComboStatesAsync(int countryId);
+
+            Task<IEnumerable<SelectListItem>> GetComboCitiesAsync(int stateId);
+
+
+
     }
 }
