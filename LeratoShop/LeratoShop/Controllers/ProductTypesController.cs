@@ -181,6 +181,7 @@ namespace LeratoShop.Controllers
             ProductType productType = await _context.ProductTypes.FindAsync(id);
             _context.ProductTypes.Remove(productType);
             await _context.SaveChangesAsync();
+            _flashMessage.Info("Registro Borrado.");
             return RedirectToAction(nameof(Index));
         }
 
@@ -212,6 +213,7 @@ namespace LeratoShop.Controllers
                 .FirstOrDefaultAsync(p => p.Id == id);
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
+            _flashMessage.Info("Registro Borrado.");
             return RedirectToAction(nameof(Details), new { Id = product.ProductType.Id });
         }
 
@@ -242,6 +244,7 @@ namespace LeratoShop.Controllers
                 .FirstOrDefaultAsync(pd => pd.Id == id);
             _context.ProductDetails.Remove(productDetail);
             await _context.SaveChangesAsync();
+            _flashMessage.Info("Registro Borrado.");
             return RedirectToAction(nameof(ProductDetails), new { Id = productDetail.Product.Id });
         }
 
