@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Vereyon.Web;
 
 namespace LeratoShop.Controllers
 {
@@ -13,10 +14,12 @@ namespace LeratoShop.Controllers
     public class ProductTypesController : Controller
     {
         private readonly DataContext _context;
+        private readonly IFlashMessage _flashMessage;
 
-        public ProductTypesController(DataContext context)
+        public ProductTypesController(DataContext context, IFlashMessage flashMessage)
         {
             _context = context;
+            _flashMessage = flashMessage;
         }
         public async Task<IActionResult> Index()
         {
@@ -45,7 +48,7 @@ namespace LeratoShop.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un tipo producto con el mismo nombre.");
+                        _flashMessage.Danger("Ya existe un tipo producto con el mismo nombre.");
                     }
                     else
                     {
@@ -100,7 +103,7 @@ namespace LeratoShop.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un tipo producto con el mismo nombre.");
+                        _flashMessage.Danger("Ya existe un tipo producto con el mismo nombre.");
                     }
                     else
                     {
@@ -291,7 +294,7 @@ namespace LeratoShop.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un producto con el mismo nombre.");
+                        _flashMessage.Danger("Ya existe un producto con el mismo nombre.");
                     }
                     else
                     {
@@ -353,7 +356,7 @@ namespace LeratoShop.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un detalle producto con el mismo nombre.");
+                        _flashMessage.Danger("Ya existe un detalle producto con el mismo nombre.");
                     }
                     else
                     {
@@ -425,7 +428,7 @@ namespace LeratoShop.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un producto con el mismo nombre.");
+                        _flashMessage.Danger("Ya existe un producto con el mismo nombre.");
                     }
                     else
                     {
@@ -493,7 +496,7 @@ namespace LeratoShop.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un producto con el mismo nombre.");
+                        _flashMessage.Danger("Ya existe un producto con el mismo nombre.");
                     }
                     else
                     {

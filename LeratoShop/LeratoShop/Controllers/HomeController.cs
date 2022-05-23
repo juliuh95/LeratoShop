@@ -1,16 +1,19 @@
 ﻿using LeratoShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Vereyon.Web;
 
 namespace LeratoShop.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IFlashMessage _flashMessage;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IFlashMessage flashMessage)
         {
             _logger = logger;
+            _flashMessage = flashMessage;
         }
 
         public IActionResult Index()

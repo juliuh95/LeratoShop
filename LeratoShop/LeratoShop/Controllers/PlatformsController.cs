@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using LeratoShop.Data;
 using LeratoShop.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Vereyon.Web;
 
 namespace LeratoShop.Controllers
 {
@@ -16,10 +17,13 @@ namespace LeratoShop.Controllers
     public class PlatformsController : Controller
     {
         private readonly DataContext _context;
+        private readonly IFlashMessage _flashMessage;
 
-        public PlatformsController(DataContext context)
+
+        public PlatformsController(DataContext context, IFlashMessage flashMessage)
         {
             _context = context;
+            _flashMessage = flashMessage; 
         }
 
         // GET: Platforms
@@ -71,16 +75,18 @@ namespace LeratoShop.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una plataforma con el mismo nombre.");
+
+                        _flashMessage.Danger("Ya existe una plataforma con el mismo nombre.");
+                        
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                         _flashMessage.Danger( dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                     _flashMessage.Danger( exception.Message);
                 }
             }
             return View(platform);
@@ -125,16 +131,16 @@ namespace LeratoShop.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una plataforma con el mismo nombre.");
+                        _flashMessage.Danger("Ya existe una plataforma con el mismo nombre.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _flashMessage.Danger( dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _flashMessage.Danger(exception.Message);
                 }
             }
             return View(platform);
