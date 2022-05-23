@@ -172,6 +172,7 @@ namespace LeratoShop.Controllers
             var platform = await _context.Platforms.FindAsync(id);
             _context.Platforms.Remove(platform);
             await _context.SaveChangesAsync();
+            _flashMessage.Info("Registro Borrado.");
             return RedirectToAction(nameof(Index));
         }
 

@@ -94,7 +94,7 @@ namespace LeratoShop.Controllers
                         $"<hr/><br/><p><a href = \"{tokenLink}\">Confirmar Email</a></p>");
                 if (response.IsSuccess)
                 {
-                    ViewBag.Message = "Las instrucciones para habilitar el administrador han sido enviadas al correo.";
+                    _flashMessage.Info("Las instrucciones para habilitar el administrador han sido enviadas al correo.");
                     return View(model);
                 }
 
