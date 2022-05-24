@@ -10,6 +10,8 @@ using LeratoShop.Data;
 using LeratoShop.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Vereyon.Web;
+using System.Diagnostics;
+using static LeratoShop.Helper.ModalHelper;
 
 namespace LeratoShop.Controllers
 {
@@ -145,37 +147,57 @@ namespace LeratoShop.Controllers
             }
             return View(platform);
         }
-
+        [NoDirectAccess]
         // GET: Platforms/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
+
+            Debug.WriteLine("##### " + id);
+                Platform platform = await _context.Platforms.FindAsync(id);
+
+                try
+                {
+                    _context.Platforms.Remove(platform);
+                    await _context.SaveChangesAsync();
+                    _flashMessage.Info("Registro Borrado.");
+                }
+                catch
+                {
+                    _flashMessage.Danger("No se puede borrar la plataforma porque tiene registros relacionados.");
+                }
+                return RedirectToAction(nameof(Index));
+
+
+
+
+
+
+
+
+                /*
+                                if (id == null)
+                            {
+                                return NotFound();
+                            }
+
+                            var platform = await _context.Platforms
+                                .FirstOrDefaultAsync(m => m.Id == id);
+                            if (platform == null)
+                            {
+                                return NotFound();
+                            }
+
+                            return View(platform);*/
             }
 
-            var platform = await _context.Platforms
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (platform == null)
-            {
-                return NotFound();
-            }
+            /* POST: Platforms/Delete/5
+            [HttpPost, ActionName("Delete")]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> DeleteConfirmed(int id)
 
-            return View(platform);
-        }
+                return RedirectToAction(nameof(Index));
+            }*/
 
-        // POST: Platforms/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var platform = await _context.Platforms.FindAsync(id);
-            _context.Platforms.Remove(platform);
-            await _context.SaveChangesAsync();
-            _flashMessage.Info("Registro Borrado.");
-            return RedirectToAction(nameof(Index));
-        }
-
-       
+        
     }
 }

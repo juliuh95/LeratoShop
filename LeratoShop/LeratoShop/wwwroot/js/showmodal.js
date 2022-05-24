@@ -59,6 +59,7 @@ jQueryAjaxPost = form => {
          * @return string id item.
          */
     function openModal(modalName, classOrId, sourceEvent, deletePath, eventClassOrId) {
+        console.log("###### " + deletePath)
         var textEvent;
         if (classOrId) {
             textEvent = "." + modalName;
@@ -85,6 +86,7 @@ jQueryAjaxPost = form => {
             textEvent = "#" + sourceEvent;
         }
         $(textEvent).click(function () {
+            console.log("#######" + deletePath)
             window.location.href = deletePath + item_to_delete;
         });
     }
