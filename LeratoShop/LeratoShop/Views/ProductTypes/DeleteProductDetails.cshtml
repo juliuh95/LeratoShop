@@ -1,19 +1,17 @@
 ﻿@model LeratoShop.Data.Entities.ProductDetail
 
 @{
-    ViewData["Title"] = "DeleteProductDetails";
+    ViewData["Title"] = "Delete";
 }
 
-<flash dismissable="true" />
+<h1>Borrar</h1>
 
-<h1>Eliminar Detalle Producto</h1>
-
-<h3>Esta seguro que desea eliminar el registro?</h3>
+<h3>¿Esta seeguro de querer borrar?</h3>
 <div>
-    <partial name = "_ProductDetailsDeleteDetails"/>
+    <partial name="_ProductDetailsDeleteDetails"/>    
     <form asp-action="DeleteProductDetails">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" />
-        <a asp-action="ProductDetails"  asp-route-id="@Model?.Product.Id" class="btn btn-secondary" >Regresar</a>
+        <input type="submit" value="Borrar" class="btn btn-outline-danger" />
+        <a asp-action="ProductDetails" asp-route-id="@Model?.Product.Id" class="btn btn-outline-success">Regresar</a>
     </form>
 </div>

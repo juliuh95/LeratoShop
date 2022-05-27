@@ -3,6 +3,7 @@ using LeratoShop.Data.Entities;
 using LeratoShop.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace LeratoShop.Helper
 {
@@ -48,6 +49,7 @@ namespace LeratoShop.Helper
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
             if (result != IdentityResult.Success)
             {
+                Debug.WriteLine("Llego al success " + result);
                 return null;
             }
 

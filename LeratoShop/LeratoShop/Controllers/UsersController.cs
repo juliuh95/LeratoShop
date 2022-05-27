@@ -7,6 +7,7 @@ using LeratoShop.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using Vereyon.Web;
 
 namespace LeratoShop.Controllers
@@ -58,6 +59,7 @@ namespace LeratoShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AddUserViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 Guid imageId = Guid.Empty;
@@ -66,7 +68,6 @@ namespace LeratoShop.Controllers
                 {
                     imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
                 }
-
                 model.ImageId = imageId;
                 User user = await _userHelper.AddUserAsync(model);
                 if (user == null)
@@ -77,14 +78,12 @@ namespace LeratoShop.Controllers
                     model.Cities = await _combosHelper.GetComboCitiesAsync(model.StateId);
                     return View(model);
                 }
-
                 string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
                 string tokenLink = Url.Action("ConfirmEmail", "Account", new
                 {
                     userid = user.Id,
                     token = myToken
                 }, protocol: HttpContext.Request.Scheme);
-
                 Response response = _mailHelper.SendMail(
                     $"{model.FirstName} {model.LastName}",
                     model.Username,
@@ -95,12 +94,15 @@ namespace LeratoShop.Controllers
                 if (response.IsSuccess)
                 {
                     _flashMessage.Info("Las instrucciones para habilitar el administrador han sido enviadas al correo.");
-                    return View(model);
+                    return Json(new
+                    {
+                        isValid = true,
+                        html = ModalHelper.RenderRazorViewToString(this,"_ViewAll",model)
+                    });
                 }
 
                  _flashMessage.Danger( response.Message);
             }
-
             model.Countries = await _combosHelper.GetComboCountriesAsync();
             model.States = await _combosHelper.GetComboStatesAsync(model.CountryId);
             model.Cities = await _combosHelper.GetComboCitiesAsync(model.StateId);

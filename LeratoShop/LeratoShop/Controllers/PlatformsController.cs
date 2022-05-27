@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Vereyon.Web;
 using System.Diagnostics;
 using static LeratoShop.Helper.ModalHelper;
+using LeratoShop.Helper;
 
 namespace LeratoShop.Controllers
 {
@@ -151,8 +152,6 @@ namespace LeratoShop.Controllers
         // GET: Platforms/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-
-            Debug.WriteLine("##### " + id);
                 Platform platform = await _context.Platforms.FindAsync(id);
 
                 try
@@ -166,38 +165,75 @@ namespace LeratoShop.Controllers
                     _flashMessage.Danger("No se puede borrar la plataforma porque tiene registros relacionados.");
                 }
                 return RedirectToAction(nameof(Index));
-
-
-
-
-
-
-
-
-                /*
-                                if (id == null)
-                            {
-                                return NotFound();
-                            }
-
-                            var platform = await _context.Platforms
-                                .FirstOrDefaultAsync(m => m.Id == id);
-                            if (platform == null)
-                            {
-                                return NotFound();
-                            }
-
-                            return View(platform);*/
             }
 
-            /* POST: Platforms/Delete/5
-            [HttpPost, ActionName("Delete")]
-            [ValidateAntiForgeryToken]
-            public async Task<IActionResult> DeleteConfirmed(int id)
 
-                return RedirectToAction(nameof(Index));
-            }*/
+        [NoDirectAccess]
+        public async Task<IActionResult> AddOrEdit(int id = 0)
+        {
+            if (id == 0)
+            {
+                return View(new Platform());
+            }
+            else
+            {
+                Platform platform= await _context.Platforms.FindAsync(id);
+                if (platform == null)
+                {
+                    return NotFound();
+                }
 
-        
+                return View(platform);
+            }
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOrEdit(int id, Platform platform)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (id == 0) //Insert
+                    {
+                        _context.Add(platform);
+                        await _context.SaveChangesAsync();
+                        _flashMessage.Info("Registro creado.");
+                    }
+                    else //Update
+                    {
+                        _context.Update(platform);
+                        await _context.SaveChangesAsync();
+                        _flashMessage.Info("Registro actualizado.");
+                    }
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        _flashMessage.Danger("Ya existe una plataforma con el mismo nombre.");
+                    }
+                    else
+                    {
+                        _flashMessage.Danger(dbUpdateException.InnerException.Message);
+                    }
+                    return View(platform);
+                }
+                catch (Exception exception)
+                {
+                    _flashMessage.Danger(exception.Message);
+                    return View(platform);
+                }
+
+                return Json(new { isValid = true, html = ModalHelper.RenderRazorViewToString(this, "_ViewAll", _context.Platforms.ToList()) });
+
+            }
+
+            return Json(new { isValid = false, html = ModalHelper.RenderRazorViewToString(this, "AddOrEdit", platform) });
+        }
+
     }
 }

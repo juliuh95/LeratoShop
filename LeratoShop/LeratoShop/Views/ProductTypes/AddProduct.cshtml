@@ -1,31 +1,27 @@
 ﻿@model LeratoShop.Models.ProductViewModel
-@{
-    ViewData["Title"] = "AddProduct";
 
+@{
+    ViewData["Title"] = "Producto";
+    Layout = null;
 }
+
 <flash dismissable="true" />
 
-<h1>Agregar producto</h1>
-
-<h4>Producto</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="AddProduct">
+<div class="container smfont">
+    <form asp-action="AddProduct" autocomplete="off" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);">
+        <div class="box-body">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type ="hidden" asp-for ="ProductTypeId"/>
-           <partial name = "_ProductCreateEdit"/>
-            <div class="form-group mt-2">
-                <input type="submit" value="Agregar" class="btn btn-primary" />
-                 <a asp-action="Details" asp-route-id="@Model.ProductTypeId" class="btn btn-secondary">Regresar</a>
-            </div>
-        </form>
-    </div>
+            <input type="hidden" asp-for="ProductTypeId" />
+            <partial name="_ProductCreateEdit" />
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal"><i class="fa fa-ban"></i> Cancelar</button>
+            <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-save"></i> Guardar</button>
+        </div>
+    </form>
 </div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
 

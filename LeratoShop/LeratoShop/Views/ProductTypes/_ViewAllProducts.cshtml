@@ -1,0 +1,34 @@
+﻿@model LeratoShop.Data.Entities.ProductType
+
+<flash dismissable="true" />
+
+<table class="table table-striped table-responsive-md table-bordered smfont"  id="StatesTable">
+    <colgroup>
+        <col span="1" />
+        <col span="1" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Name)
+            </th>
+            <th>
+                <a onclick="showInPopup('@Url.Action("AddProduct", "ProductTypes", new { id = Model?.Id }, Context.Request.Scheme)' , 'Nuevo Producto')" class="btn btn-sm btn-primary text-white"><i class="fa fa-plus-circle"></i> Producto</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model?.Products)
+        {
+        <tr>
+            <td>
+                <a asp-action="ProductDetails" asp-controller="ProductTypes" asp-route-Id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+            </td>
+            <td>
+                <a onclick="showInPopup('@Url.Action("EditProduct", "ProductTypes", new { id = item.Id }, Context.Request.Scheme)' , 'Actualizar Producto')" class="btn btn-sm btn-warning"><i class="fa fa-pencil-alt"></i> </a>
+                <button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-bs-toggle="modal" data-bs-target="#deleteDialog"><i class="fa fa-trash"></i></button>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

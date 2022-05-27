@@ -1,0 +1,81 @@
+﻿@model LeratoShop.Models.SalesViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Registrar ventas</h1>
+ 
+
+<div class="form-group">
+            <label asp-for="ProductTypesId" class="control-label"></label>
+            <select asp-for="ProductTypesId" asp-items="Model.ProductTypes" class="form-control"></select>
+            <span asp-validation-for="ProductTypesId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProductsId" class="control-label"></label>
+            <select asp-for="ProductsId" asp-items="Model.Products" class="form-control"></select>
+            <span asp-validation-for="ProductsId" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProductDetailsId" class="control-label"></label>
+            <select asp-for="ProductDetailsId" asp-items="Model.ProductDetails" class="form-control"></select>
+            <span asp-validation-for="ProductDetailsId" class="text-danger"></span>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ProductTypesId").change(function () {  
+                debugger;
+                $("#ProductsId").empty();
+                $("#ProductsId").append('<option value="0">[Selecciona un producto...]</option>');
+                $("#ProductDetailsId").empty();
+                $("#ProductDetailsId").append('<option value="0">[Selecciona un detalle del producto...]</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetProducts")',
+                    dataType: 'json',
+                    data: { productTypeId: $("#ProductTypesId").val() },
+                    success: function (products) {
+                        $.each(products, function (i, product) {
+                            $("#ProductsId").append('<option value="'
+                                + product.id + '">'
+                                + product.name + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve states.' + ex);
+                    }
+                });
+                return false;
+            })
+
+            $("#ProductsId").change(function () {
+                $("#ProductDetailsId").empty();
+                $("#ProductDetailsId").append('<option value="0">[Selecciona un detalle del producto...]</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetProductDetails")',
+                    dataType: 'json',
+                    data: { productId: $("#ProductsId").val() },
+                    success: function (productDetails) {
+                        $.each(productDetails, function (i, productDetail) {
+                            debugger;
+                            $("#ProductDetailsId").append('<option value="'
+                                + productDetail.id + '">'
+                                + productDetail.color + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve cities.' + ex);
+                    }
+                });
+                return false;
+            })
+        });
+    </script>
+}
