@@ -16,7 +16,7 @@ namespace LeratoShop.Controllers
         {
             SalesViewModel model = new()
             {
-                Countries = await _combosHelper.GetComboProductTypesAsync(),
+                ProductTypes = await _combosHelper.GetComboProductTypesAsync(),
                 Products = await _combosHelper.GetComboProductsAsync(0),
                 ProductDetails = await _combosHelper.GetComboProductDetailsAsync(0),
             };

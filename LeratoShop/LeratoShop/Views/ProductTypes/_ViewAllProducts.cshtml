@@ -13,7 +13,7 @@
                 @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Name)
             </th>
             <th>
-                <a onclick="showInPopup('@Url.Action("AddProduct", "ProductTypes", new { id = Model?.Id }, Context.Request.Scheme)' , 'Nuevo Producto')" class="btn btn-sm btn-primary text-white"><i class="fa fa-plus-circle"></i> Producto</a>
+                <a onclick="showInPopup('@Url.Action("AddProduct", "ProductTypes", new { id = Model?.Id }, Context.Request.Scheme)' , 'Nuevo Producto')" class="btn btn-sm btn-secondary text-white"><i class="fa fa-plus-circle"></i> Producto</a>
             </th>
         </tr>
     </thead>
@@ -25,8 +25,8 @@
                 <a asp-action="ProductDetails" asp-controller="ProductTypes" asp-route-Id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
             </td>
             <td>
-                <a onclick="showInPopup('@Url.Action("EditProduct", "ProductTypes", new { id = item.Id }, Context.Request.Scheme)' , 'Actualizar Producto')" class="btn btn-sm btn-warning"><i class="fa fa-pencil-alt"></i> </a>
-                <button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-bs-toggle="modal" data-bs-target="#deleteDialog"><i class="fa fa-trash"></i></button>
+                <a onclick="showInPopup('@Url.Action("EditProduct", "ProductTypes", new { id = item.Id }, Context.Request.Scheme)' , 'Actualizar Producto')" class="btn btn-sm btn-dark"><i class="fa fa-pencil-alt"></i> Editar</a>
+                <button data-id="@item.Id" class="btn btn-sm btn-danger deleteItem" data-bs-toggle="modal" data-bs-target="#deleteDialog"><i class="fa fa-trash"></i> Eliminar</button>
             </td>
         </tr>
         }

@@ -779,7 +779,7 @@ public async Task<IActionResult> AddProduct(ProductViewModel model)
               .Include(pd => pd.Product)
               .FirstOrDefaultAsync(pd => pd.Id == id);
 
-             if (productDetail == null)
+             if (productDetail == null)Product
              {
                  return NotFound();
              }
@@ -907,6 +907,33 @@ public async Task<IActionResult> AddProduct(ProductViewModel model)
             }
 
             return Json(new { isValid = false, html = ModalHelper.RenderRazorViewToString(this, "AddOrEdit", productType) });
+        }
+
+
+        public JsonResult GetProducts(int productTypeId)
+        {
+            ProductType productType = _context.ProductTypes
+                .Include(p => p.Products)
+                .FirstOrDefault(pt => pt.Id == productTypeId);
+            if (productType == null)
+            {
+                return null;
+            }
+
+            return Json(productType.Products.OrderBy(d => d.Name));
+        }
+
+        public JsonResult GetProductDetails(int productId)
+        {
+            Product product = _context.Products
+                .Include(pd => pd.ProductDetails)
+                .FirstOrDefault(p => p.Id == productId);
+            if (product == null)
+            {
+                return null;
+            }
+
+            return Json(product.ProductDetails.OrderBy(c => c.Color));
         }
     }
 }
