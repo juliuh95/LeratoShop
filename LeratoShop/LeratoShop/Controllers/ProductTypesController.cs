@@ -472,7 +472,7 @@ public async Task<IActionResult> AddProduct(ProductViewModel model)
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una producto detalle con el mismo nombre en este Producto");
+                        ModelState.AddModelError(string.Empty, "Ya existe un producto detalle con el mismo nombre en este Producto");
                     }
                     else
                     {
@@ -599,9 +599,10 @@ public async Task<IActionResult> AddProduct(ProductViewModel model)
                         .Include(c => c.Products)
                         .ThenInclude(s => s.ProductDetails)
                         .FirstOrDefaultAsync(c => c.Id == model.ProductTypeId);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(); 
                     _flashMessage.Confirmation("Registro actualizado.");
                     return Json(new { isValid = true, html = ModalHelper.RenderRazorViewToString(this, "_ViewAllProducts", productType) });
+                   
                 }
                 catch (DbUpdateException dbUpdateException)
                 {
@@ -893,7 +894,7 @@ public async Task<IActionResult> AddProduct(ProductViewModel model)
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        _flashMessage.Danger("Ya existe un país con el mismo nombre.");
+                        _flashMessage.Danger("Ya existe un tipo producto con el mismo nombre.");
                     }
                     else
                     {
@@ -909,31 +910,5 @@ public async Task<IActionResult> AddProduct(ProductViewModel model)
             return Json(new { isValid = false, html = ModalHelper.RenderRazorViewToString(this, "AddOrEdit", productType) });
         }
 
-
-        public JsonResult GetProducts(int productTypeId)
-        {
-            ProductType productType = _context.ProductTypes
-                .Include(p => p.Products)
-                .FirstOrDefault(pt => pt.Id == productTypeId);
-            if (productType == null)
-            {
-                return null;
-            }
-
-            return Json(productType.Products.OrderBy(d => d.Name));
-        }
-
-        public JsonResult GetProductDetails(int productId)
-        {
-            Product product = _context.Products
-                .Include(pd => pd.ProductDetails)
-                .FirstOrDefault(p => p.Id == productId);
-            if (product == null)
-            {
-                return null;
-            }
-
-            return Json(product.ProductDetails.OrderBy(c => c.Color));
-        }
     }
 }

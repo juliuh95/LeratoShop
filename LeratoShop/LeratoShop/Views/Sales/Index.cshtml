@@ -30,7 +30,6 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#ProductTypesId").change(function () {  
-                debugger;
                 $("#ProductsId").empty();
                 $("#ProductsId").append('<option value="0">[Selecciona un producto...]</option>');
                 $("#ProductDetailsId").empty();
@@ -64,7 +63,6 @@
                     data: { productId: $("#ProductsId").val() },
                     success: function (productDetails) {
                         $.each(productDetails, function (i, productDetail) {
-                            debugger;
                             $("#ProductDetailsId").append('<option value="'
                                 + productDetail.id + '">'
                                 + productDetail.color + '</option>');

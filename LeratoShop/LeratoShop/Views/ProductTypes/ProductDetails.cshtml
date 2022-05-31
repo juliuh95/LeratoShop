@@ -6,17 +6,6 @@
 
 <flash dismissable="true" />
 
-<h1>Detalles</h1>
-
-<div>
-    <partial name="_ProductDeleteDetails" />    
-</div>
-
-<div>
-    <a asp-action="Details" asp-route-id="@Model?.ProductType.Id" class="btn btn-outline-success"><i class="fa-solid fa-arrow-rotate-left"></i> Regresar</a>
-</div>
-<hr />
-
 <!-- Content Wrapper. Contains page content -->
 <div class="container-fluid">
     <div class="card mt-2">
@@ -57,3 +46,6 @@
         sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/ProductTypes/DeleteProductDetails/', false);
     </script>
 }
+
+
+
